@@ -1,9 +1,4 @@
-import {
-  Authenticated,
-  GitHubBanner,
-  Refine,
-  WelcomePage,
-} from "@refinedev/core";
+import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -22,6 +17,11 @@ import { Home, ForgotPassword, Login, Register } from "./pages";
 import Layout from "./components/layout";
 import { Resources } from "./components/config/resources";
 import CompaniesListPage from "./pages/company/list";
+import Create from "./pages/company/create";
+import Edit from "./pages/company/edit";
+import List from "./pages/tasks/list";
+import TasksCreatePage from "./pages/tasks/tasks-create-page";
+import TasksEditPage from "./pages/tasks/tasks-edit-page";
 
 function App() {
   return (
@@ -45,8 +45,6 @@ function App() {
                 liveMode: "auto",
               }}>
               <Routes>
-                {/* <Route index element={<WelcomePage />} /> */}
-
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/forgot-password' element={<ForgotPassword />} />
@@ -62,7 +60,21 @@ function App() {
                     </Authenticated>
                   }>
                   <Route index element={<Home />} />
-                  <Route path='/companies' element={<CompaniesListPage />} />
+                  <Route path='/companies'>
+                    <Route index element={<CompaniesListPage />} />
+                    <Route path='new' element={<Create />} />
+                    <Route path='edit/:id' element={<Edit />} />
+                  </Route>
+                  <Route
+                    path='/tasks'
+                    element={
+                      <List>
+                        <Outlet />
+                      </List>
+                    }>
+                    <Route path='new' element={<TasksCreatePage />} />
+                    <Route path='edit/:id' element={<TasksEditPage />} />
+                  </Route>
                 </Route>
               </Routes>
               <RefineKbar />
